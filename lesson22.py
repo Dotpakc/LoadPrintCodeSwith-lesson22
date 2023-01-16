@@ -1,4 +1,6 @@
+import os
 import logging
+import random
 
 from aiogram import Bot, Dispatcher, executor, types
 
@@ -52,7 +54,16 @@ async def send_welcome(message: types.Message):
         
     await message.answer_media_group(media=media)
         
-
+@dp.message_handler(commands='give_me_photo')
+async def download_some_photo(message: types.Message):
+    # Download file from Data/photo folder
+    list_photos = os.listdir('data/photo')
+    photo = random.choice(list_photos)
+    with open(f'data/photo/{photo}', 'rb') as photo:
+        await message.reply_photo(photo, caption='Some photo')
+        
+    
+    
 # @dp.message_handler()
 # async def echo(message: types.Message):
 #     # old style:
